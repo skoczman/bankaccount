@@ -2,11 +2,13 @@ package pl.mskoczek.bankaccount.domain.account;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import pl.mskoczek.bankaccount.domain.accountevent.AccountEvent;
 import pl.mskoczek.bankaccount.domain.person.Person;
 
 import static java.time.Instant.now;
+import static java.util.Comparator.comparing;
 import static pl.mskoczek.bankaccount.domain.accountevent.AccountEventType.*;
 
 class Account{
@@ -36,6 +38,13 @@ class Account{
 
     List<AccountEvent> getStatement() {
         return statement;
+    }
+
+    String printStatement(){
+        return statement.stream()
+            .sorted(comparing((AccountEvent event) -> event.timestamp()).reversed())
+            .map(AccountEvent::toString)
+            .collect(Collectors.joining("\n"));
     }
 
     void deposit(Double amount) {

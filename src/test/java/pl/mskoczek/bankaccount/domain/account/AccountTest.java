@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import pl.mskoczek.bankaccount.domain.accountevent.AccountEvent;
 import pl.mskoczek.bankaccount.domain.person.Person; 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;  
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AccountTest{
     private static final String timestampRegex = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3,9}Z";
@@ -61,10 +61,15 @@ class AccountTest{
         
         // then
         assertEquals(4, statement.size());
-        assertTrue(statement.get(0).toString().matches("DEPOSIT, " + timestampRegex + ", 1000.50, 1000.50"));
-        assertTrue(statement.get(1).toString().matches("WITHDRAWAL, " + timestampRegex + ", 200.00, 800.50"));
-        assertTrue(statement.get(2).toString().matches("WITHDRAWAL, " + timestampRegex + ", 500.10, 300.40"));
-        assertTrue(statement.get(3).toString().matches("DEPOSIT, " + timestampRegex + ", 100.10, 400.50"));
+
+        // and
+        String printedStatement = account.printStatement();
+        assertTrue(printedStatement.matches(
+            "DEPOSIT, " + timestampRegex + ", 100.10, 400.50\\n"
+            + "WITHDRAWAL, " + timestampRegex + ", 500.10, 300.40\\n"
+            + "WITHDRAWAL, " + timestampRegex + ", 200.00, 800.50\\n"
+            + "DEPOSIT, " + timestampRegex + ", 1000.50, 1000.50"
+        ));
     }
 
     @Test
