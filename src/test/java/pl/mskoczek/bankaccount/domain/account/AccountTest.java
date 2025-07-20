@@ -75,7 +75,7 @@ class AccountTest{
             account.withdrawal(account.getBalance() + 100.0);
         });
 
-        // and
+        // then
         assertEquals(exception.getMessage(), "Insufficient balance for withdrawal from account " + account.getIban() + 
         ": current balance is " + account.getBalance() + ", attempted withdrawal is " + (account.getBalance() + 100.0));
     }
